@@ -1,5 +1,5 @@
 /* =========================================
-   ROOT VARIABLES
+   Light and Dark Theme Variables
 ========================================= */
 :root {
   --colour-bg: #f4f4f2;
@@ -17,6 +17,51 @@
   --colour-nav-icon: #919191;
   --colour-nav-active: #ffffff;
 
+.darkmode{
+    --colour-bg: #f4f4f2;
+  --colour-surface: #ffffff;
+
+  --colour-primary: #4A5c40;
+  --colour-primary-dark: #1d4ed8;
+
+  --colour-text: #1a1a1a;
+  --colour-muted: #6b7280;
+
+  --colour-border: #e5e7eb;
+
+  --colour-nav-bg: #4A5c40;
+  --colour-nav-icon: #919191;
+  --colour-nav-active: #ffffff;
+}
+
+
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --colour-bg: #111827;
+    --colour-surface: #1f2937;
+
+    --colour-primary: #60a5fa;
+    --colour-primary-dark: #3b82f6;
+
+    --colour-text: #f9fafb;
+    --colour-muted: #9ca3af;
+
+    --colour-border: #374151;
+
+    --colour-nav-bg: #111827;
+    --colour-nav-icon: #9ca3af;
+    --colour-nav-active: #f9fafb;
+
+    --shadow: 0 2px 12px rgba(0, 0, 0, 0.48);
+  }
+}
+
+
+
+
+
+
   --nav-height: 64px;
 
   
@@ -27,6 +72,8 @@
   --font-main: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   --font-color: var(--colour-text);
 }
+
+
 
 
 /* =========================================
@@ -293,3 +340,4 @@ main {
       );
   }
 }
+

@@ -40,3 +40,5 @@
        caches.match(event.request).then(cached => cached || fetch(event.request))
      );
    });
+
+  
