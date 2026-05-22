@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <!-- Makes it look correct on mobile screens -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>My App – map</title>
+
+  <!-- PWA stuff -->
+  <link rel="manifest" href="manifest.json" />
+  <meta name="theme-color" content="#2563eb" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+
+  <!-- Shared stylesheet -->
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+
+  <!-- =============================================
+       MAIN CONTENT AREA
+       Students: add your page content below here!
+       ============================================= -->
+  <main>
+
+    <h1 class="page-title">Map</h1>
+    <p class="page-subtitle">Welcome to the Map page</p>
+
+    <!-- ✏️ YOUR CONTENT GOES HERE -->
+
+  </main>
+  <!-- =============================================
+       END OF MAIN CONTENT AREA
+       ============================================= -->
+
+
+  <!-- BOTTOM NAVIGATION BAR -->
+  <!-- Students: change the labels and icons but keep the structure -->
+  <nav class="bottom-nav" aria-label="Main navigation">
+   <!-- Button 1: HOME (currently active — this is index.html) -->
+    <a href="index.html" class="nav-btn active"  aria-label="Home">
+      <!-- Home icon -->
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M3 9.5L12 3l9 6.5V20a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9.5z"/>
+        <path d="M9 21V12h6v9"/>
+      </svg>
+      Home
+    </a>
+
+    <!-- Button 2: CHAT -->
+    <a href="chat.html" class="nav-btn" aria-label="Chat">
+      <!-- Chat icon -->
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M21 15a2 2 0 0 1-2 2H8l-4 4V5a2 2 0 0 1 2-2h13a2 2 0 0 1 2 2z"/>
+      </svg>
+      Chat
+    </a>
+
+    <!-- Button 3: POST -->
+    <a href="post.html" class="nav-btn" aria-label="Post">
+      <!-- Post icon -->
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M12 5v14"/>
+        <path d="M5 12h14"/>
+      </svg>
+      Post
+    </a>
+
+    <!-- Button 4: MAP -->
+    <a href="map.html" class="nav-btn" aria-current="page" aria-label="Map">
+      <!-- Map icon -->
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M3 6l7-3 7 3 7-3v15l-7 3-7-3-7 3V6z"/>
+      </svg>
+      Map
+    </a>
+
+    <!-- Button 5: SETTINGS -->
+    <a href="settings.html" class="nav-btn" aria-label="Settings">
+      <!-- Settings icon -->
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <circle cx="12" cy="12" r="3"/>
+        <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06A1.65 1.65 0 0 0 15 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 8.6 15a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 8.6a1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 15 8.6a1.65 1.65 0 0 0 1.82.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 15z"/>
+      </svg>
+      Settings
+    </a>
+
+
+  </nav>
+  <!-- END NAVIGATION BAR -->
+
+  <!-- Service worker registration (makes it a PWA) -->
+  <script>
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('sw.js');
+    }
+  </script>
+
+</body>
+</html>

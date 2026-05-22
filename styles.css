@@ -1,0 +1,277 @@
+/* =========================================
+   ROOT VARIABLES
+========================================= */
+:root {
+  --colour-bg: #f4f4f2;
+  --colour-surface: #ffffff;
+
+  --colour-primary: #2563eb;
+  --colour-primary-dark: #1d4ed8;
+
+  --colour-text: #1a1a1a;
+  --colour-muted: #6b7280;
+
+  --colour-border: #e5e7eb;
+
+  --colour-nav-bg: #4A5c40;
+  --colour-nav-icon: #6b7280;
+  --colour-nav-active: #2563eb;
+
+  --nav-height: 64px;
+
+  --radius: 12px;
+  --shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+
+  --font-main: 'Segoe UI', system-ui, sans-serif;
+}
+
+
+/* =========================================
+   RESET
+========================================= */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html,
+body {
+  height: 100%;
+}
+
+
+/* =========================================
+   BODY
+========================================= */
+body {
+  font-family: var(--font-main);
+
+  background: var(--colour-bg);
+  color: var(--colour-text);
+
+  display: flex;
+  flex-direction: column;
+
+  padding-bottom: var(--nav-height);
+}
+
+
+/* =========================================
+   MAIN CONTENT
+========================================= */
+main {
+  flex: 1;
+
+  padding: 20px 16px;
+
+  overflow-y: auto;
+
+  min-height: calc(100vh - var(--nav-height));
+}
+
+
+/* =========================================
+   PAGE TEXT
+========================================= */
+.page-title {
+  font-size: 1.5rem;
+  font-weight: 700;
+
+  margin-bottom: 6px;
+}
+
+.page-subtitle {
+  font-size: 0.95rem;
+
+  color: var(--colour-muted);
+
+  margin-bottom: 24px;
+}
+
+
+/* =========================================
+   CARD
+========================================= */
+.card {
+  background: var(--colour-surface);
+
+  border-radius: var(--radius);
+
+  padding: 16px;
+
+  box-shadow: var(--shadow);
+
+  margin-bottom: 16px;
+}
+
+
+/* =========================================
+   BUTTONS
+========================================= */
+.btn {
+  display: inline-flex;
+
+  align-items: center;
+  justify-content: center;
+
+  gap: 8px;
+
+  padding: 12px 24px;
+
+  border: none;
+  border-radius: 8px;
+
+  font-family: var(--font-main);
+  font-size: 0.95rem;
+  font-weight: 600;
+
+  cursor: pointer;
+
+  transition: 0.15s ease;
+}
+
+.btn:active {
+  transform: scale(0.97);
+}
+
+.btn-primary {
+  background: var(--colour-primary);
+  color: white;
+}
+
+.btn-primary:hover {
+  background: var(--colour-primary-dark);
+}
+
+.btn-outline {
+  background: transparent;
+
+  color: var(--colour-primary);
+
+  border: 2px solid var(--colour-primary);
+}
+
+.btn-block {
+  width: 100%;
+}
+
+
+/* =========================================
+   DIVIDER
+========================================= */
+.divider {
+  border: none;
+
+  border-top: 1px solid var(--colour-border);
+
+  margin: 16px 0;
+}
+
+
+/* =========================================
+   BOTTOM NAVIGATION
+========================================= */
+.bottom-nav {
+  position: fixed;
+
+  bottom: 0;
+  left: 0;
+  right: 0;
+
+  height: var(--nav-height);
+
+  background: var(--colour-nav-bg);
+
+  border-top: 1px solid var(--colour-border);
+
+  display: flex;
+
+  box-shadow: 0 -2px 12px rgba(0, 0, 0, 0.06);
+
+  z-index: 100;
+}
+
+
+/* =========================================
+   NAV BUTTON
+========================================= */
+.nav-btn {
+  flex: 1;
+
+  display: flex;
+  flex-direction: column;
+
+  align-items: center;
+  justify-content: center;
+
+  gap: 4px;
+
+  text-decoration: none;
+
+  color: var(--colour-nav-icon);
+
+  font-size: 0.65rem;
+  font-weight: 600;
+
+  text-transform: uppercase;
+
+  transition: color 0.15s ease;
+
+  -webkit-tap-highlight-color: transparent;
+}
+
+
+/* =========================================
+   ACTIVE NAV BUTTON
+========================================= */
+.nav-btn.active,
+.nav-btn[aria-current="page"] {
+  color: var(--colour-nav-active);
+}
+
+
+/* =========================================
+   SVG ICONS
+========================================= */
+.nav-btn svg {
+  width: 24px;
+  height: 24px;
+
+  display: block;
+
+  fill: none;
+
+  stroke: currentColor;
+  stroke-width: 2;
+
+  stroke-linecap: round;
+  stroke-linejoin: round;
+
+  overflow: visible;
+}
+
+
+/* =========================================
+   SAFE AREA SUPPORT
+========================================= */
+@supports (padding-bottom: env(safe-area-inset-bottom)) {
+
+  .bottom-nav {
+    padding-bottom: env(safe-area-inset-bottom);
+
+    height:
+      calc(
+        var(--nav-height)
+        + env(safe-area-inset-bottom)
+      );
+  }
+
+  body {
+    padding-bottom:
+      calc(
+        var(--nav-height)
+        + env(safe-area-inset-bottom)
+      );
+  }
+}
