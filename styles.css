@@ -5,7 +5,7 @@
   --colour-bg: #f4f4f2;
   --colour-surface: #ffffff;
 
-  --colour-primary: #2563eb;
+  --colour-primary: #4A5c40;
   --colour-primary-dark: #1d4ed8;
 
   --colour-text: #1a1a1a;
@@ -14,15 +14,18 @@
   --colour-border: #e5e7eb;
 
   --colour-nav-bg: #4A5c40;
-  --colour-nav-icon: #6b7280;
-  --colour-nav-active: #2563eb;
+  --colour-nav-icon: #919191;
+  --colour-nav-active: #ffffff;
 
   --nav-height: 64px;
+
+  
 
   --radius: 12px;
   --shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
 
-  --font-main: 'Segoe UI', system-ui, sans-serif;
+  --font-main: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  --font-color: var(--colour-text);
 }
 
 
@@ -34,6 +37,21 @@
   padding: 0;
   box-sizing: border-box;
 }
+
+header {
+  display: none;
+  background-color: var(--colour-primary);
+}
+
+h1, h2, h3, h4, h5, h6 {
+  margin: 0;
+  font-weight: 700;
+  font-family: var(--font-main);
+  color: var(--colour-text);
+}
+
+
+
 
 html,
 body {
