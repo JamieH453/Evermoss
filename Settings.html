@@ -14,6 +14,8 @@
 
   <!-- Shared stylesheet -->
   <link rel="stylesheet" href="styles.css" />
+  
+
 </head>
 <body>
 
@@ -26,7 +28,57 @@
     <h1 class="page-title">Settings</h1>
     <p class="page-subtitle">Welcome to the Settings page</p>
 
-    <!-- ✏️ YOUR CONTENT GOES HERE -->
+    <section class="settings-panel">
+      <h2>Accessibility controls</h2>
+
+      <div class="setting-item">
+        <div>
+          <label for="toggle-high-contrast">High contrast</label>
+          <p>Boost text and interface contrast for easier reading.</p>
+        </div>
+        <label class="toggle-control">
+          <input id="toggle-high-contrast" type="checkbox" />
+          <span class="toggle-slider"></span>
+          <span class="visually-hidden">Enable high contrast</span>
+        </label>
+      </div>
+
+      <div class="setting-item">
+        <div>
+          <label for="toggle-large-text">Large text</label>
+          <p>Increase font size across the app for better visibility.</p>
+        </div>
+        <label class="toggle-control">
+          <input id="toggle-large-text" type="checkbox" />
+          <span class="toggle-slider"></span>
+          <span class="visually-hidden">Enable large text</span>
+        </label>
+      </div>
+
+      <div class="setting-item">
+        <div>
+          <label for="toggle-reduce-motion">Reduce motion</label>
+          <p>Minimise animations and transitions for a calmer experience.</p>
+        </div>
+        <label class="toggle-control">
+          <input id="toggle-reduce-motion" type="checkbox" />
+          <span class="toggle-slider"></span>
+          <span class="visually-hidden">Enable reduce motion</span>
+        </label>
+      </div>
+
+      <div class="setting-item">
+        <div>
+          <label for="toggle-voice-hints">Voice hints</label>
+          <p>Turn on spoken guidance and prompts throughout the app.</p>
+        </div>
+        <label class="toggle-control">
+          <input id="toggle-voice-hints" type="checkbox" />
+          <span class="toggle-slider"></span>
+          <span class="visually-hidden">Enable voice hints</span>
+        </label>
+      </div>
+    </section>
 
   </main>
   <!-- =============================================
