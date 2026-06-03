@@ -3,21 +3,56 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-  <title>My App – Chat</title>
+  <title>Evermoss – Chat</title>
   <link rel="manifest" href="manifest.json" />
   <meta name="theme-color" content="#2563eb" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="default" />
   <link rel="stylesheet" href="styles.css" />
+  <style>
+  
+  </style>
 </head>
 <body>
 
   <main>
 
-    <h1 class="page-title">Chat</h1>
-    <p class="page-subtitle">This is the Chat page</p>
+    <div class="chat-app">
+      <aside class="chat-list-panel">
+        <div class="chat-list-header">
+          <h1 class="page-title">Chats</h1>
+          <button type="button" id="newChatBtn">New Chat</button>
+        </div>
+        <p class="page-subtitle">Open a conversation or start a new one.</p>
+        <ul class="chat-list" id="chatList" aria-label="Recent chats">
+          <li class="chat-item active" data-chat-id="1">
+            <span class="chat-item-title">Evermoss Team</span>
+            <span class="chat-item-preview">Hi! Welcome to Evermoss.</span>
+          </li>
+          <li class="chat-item" data-chat-id="2">
+            <span class="chat-item-title">Alex</span>
+            <span class="chat-item-preview">Want to meet later?</span>
+          </li>
+          <li class="chat-item" data-chat-id="3">
+            <span class="chat-item-title">Jamie</span>
+            <span class="chat-item-preview">Thanks for the update.</span>
+          </li>
+        </ul>
+      </aside>
 
-   
+      <section class="chat-container" aria-label="Chat conversation">
+        <div class="chat-header">
+          <h2 id="chatTitle">Evermoss Team</h2>
+          <p id="chatSubtitle">Send a message to the Evermoss team.</p>
+        </div>
+        <div class="chat-messages" id="chatMessages"></div>
+        <form class="chat-form" id="chatForm">
+          <label for="messageInput" class="visually-hidden">Type your message</label>
+          <input type="text" id="messageInput" name="message" placeholder="Type a message..." autocomplete="off" required />
+          <button type="submit">Send</button>
+        </form>
+      </section>
+    </div>
 
   </main>
 
@@ -75,6 +110,101 @@
   </nav>
 
   <script>
+    // Start with no predefined chats so the user can add names themselves
+    const chatData = {};
+
+    let activeChatId = null;
+
+    const chatList = document.getElementById('chatList');
+    const chatMessages = document.getElementById('chatMessages');
+    const chatTitle = document.getElementById('chatTitle');
+    const chatSubtitle = document.getElementById('chatSubtitle');
+    const chatForm = document.getElementById('chatForm');
+    const messageInput = document.getElementById('messageInput');
+    const newChatBtn = document.getElementById('newChatBtn');
+
+    function renderMessages() {
+      chatMessages.innerHTML = '';
+      const messages = chatData[activeChatId].messages;
+      messages.forEach((message) => {
+        const messageEl = document.createElement('div');
+        messageEl.className = `message message-${message.sender}`;
+        messageEl.textContent = message.text;
+        chatMessages.appendChild(messageEl);
+      });
+      chatMessages.scrollTop = chatMessages.scrollHeight;
+    }
+
+    function updateChatHeader() {
+      chatTitle.textContent = chatData[activeChatId].title;
+      chatSubtitle.textContent = chatData[activeChatId].subtitle;
+    }
+
+    function setActiveChat(chatId) {
+      activeChatId = chatId;
+      const items = chatList.querySelectorAll('.chat-item');
+      items.forEach((item) => {
+        item.classList.toggle('active', item.dataset.chatId === chatId);
+      });
+      updateChatHeader();
+      renderMessages();
+    }
+
+    function addMessage(text) {
+      chatData[activeChatId].messages.push({ sender: 'me', text });
+      updateChatPreview(activeChatId, text);
+      renderMessages();
+      messageInput.value = '';
+      messageInput.focus();
+      setTimeout(() => {
+        const reply = 'Thanks! I got your message.';
+        chatData[activeChatId].messages.push({ sender: 'other', text: reply });
+        updateChatPreview(activeChatId, reply);
+        renderMessages();
+      }, 800);
+    }
+
+    function updateChatPreview(chatId, text) {
+      const item = chatList.querySelector(`.chat-item[data-chat-id="${chatId}"]`);
+      if (item) {
+        const preview = item.querySelector('.chat-item-preview');
+        preview.textContent = text;
+      }
+    }
+
+    chatList.addEventListener('click', (event) => {
+      const item = event.target.closest('.chat-item');
+      if (!item) return;
+      setActiveChat(item.dataset.chatId);
+    });
+
+    chatForm.addEventListener('submit', (event) => {
+      event.preventDefault();
+      const text = messageInput.value.trim();
+      if (!text) return;
+      addMessage(text);
+    });
+
+    newChatBtn.addEventListener('click', () => {
+      const name = prompt('Enter a name for the new chat contact:');
+      if (!name) return;
+      const nextId = String(Object.keys(chatData).length + 1);
+      chatData[nextId] = {
+        title: name,
+        subtitle: `Send a message to ${name}.`,
+        messages: []
+      };
+      const listItem = document.createElement('li');
+      listItem.className = 'chat-item';
+      listItem.dataset.chatId = nextId;
+      listItem.innerHTML = `<span class="chat-item-title">${name}</span><span class="chat-item-preview">New conversation</span>`;
+      chatList.appendChild(listItem);
+      setActiveChat(nextId);
+      listItem.scrollIntoView();
+    });
+
+    if (activeChatId) setActiveChat(activeChatId);
+
     if ('serviceWorker' in navigator) {
       navigator.serviceWorker.register('sw.js');
     }
