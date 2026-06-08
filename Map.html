@@ -14,6 +14,120 @@
 
   <!-- Shared stylesheet -->
   <link rel="stylesheet" href="styles.css" />
+
+  <!-- Leaflet CSS for live map -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css" />
+  <style>
+    .map-container {
+      width: 100%;
+      height: 500px;
+      border-radius: 8px;
+      overflow: hidden;
+    }
+
+    .map-controls {
+      margin-top: 1rem;
+      display: flex;
+      justify-content: flex-end;
+    }
+
+    #add-pin-btn {
+      background: #2563eb;
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      padding: 0.85rem 1rem;
+      cursor: pointer;
+      font: inherit;
+    }
+
+    .modal {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.5);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1rem;
+      z-index: 1000;
+    }
+
+    .modal.hidden {
+      display: none;
+    }
+
+    .modal-content {
+      position: relative;
+      width: 100%;
+      max-width: 480px;
+      background: #fff;
+      border-radius: 16px;
+      padding: 1.5rem;
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.2);
+    }
+
+    .modal-content h2 {
+      margin-top: 0;
+    }
+
+    .modal-content label {
+      display: block;
+      margin-top: 1rem;
+      margin-bottom: 0.35rem;
+      font-weight: 600;
+    }
+
+    .modal-content select,
+    .modal-content textarea,
+    .modal-content input {
+      width: 100%;
+      border: 1px solid #ccc;
+      border-radius: 10px;
+      padding: 0.8rem;
+      font: inherit;
+    }
+
+    .modal-content button[type="submit"] {
+      width: 100%;
+      margin-top: 1rem;
+      padding: 0.85rem;
+      background: #2563eb;
+      color: #fff;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      font: inherit;
+    }
+
+    .modal-content #form-close-btn {
+      position: absolute;
+      top: 1rem;
+      right: 1rem;
+      background: transparent;
+      border: none;
+      font-size: 1.5rem;
+      cursor: pointer;
+      color: #333;
+    }
+
+    .image-preview img {
+      display: block;
+      width: 100%;
+      max-height: 220px;
+      object-fit: cover;
+      border-radius: 10px;
+      margin-top: 0.75rem;
+    }
+
+    .popup-post img {
+      display: block;
+      width: 100%;
+      max-height: 180px;
+      object-fit: cover;
+      border-radius: 10px;
+      margin-top: 0.75rem;
+    }
+  </style>
 </head>
 <body>
 
@@ -21,14 +135,149 @@
   <main>
     <h1 class="page-title">Map</h1>
     <p class="page-subtitle">Welcome to the Map page</p>
-    <div id="map" class="map-container">
-
-
-      
-      <!-- Map content will render here -->
+    <div id="map" class="map-container"></div>
+    <div class="map-controls">
+      <button id="add-pin-btn" type="button">Add post pin</button>
     </div>
   </main>
   <!-- END OF MAIN CONTENT AREA -->
+
+  <div id="post-form-modal" class="modal hidden" aria-hidden="true">
+    <div class="modal-content">
+      <button id="form-close-btn" type="button" aria-label="Close form">&times;</button>
+      <h2>Add a map post</h2>
+      <form id="post-form">
+        <label for="post-rating">Review rating</label>
+        <select id="post-rating" required>
+          <option value="">Select stars</option>
+          <option value="1">1 star</option>
+          <option value="2">2 stars</option>
+          <option value="3">3 stars</option>
+          <option value="4">4 stars</option>
+          <option value="5">5 stars</option>
+        </select>
+
+        <label for="post-text">Text review</label>
+        <textarea id="post-text" rows="4" placeholder="Write your review"></textarea>
+
+        <label for="post-image">Image</label>
+        <input id="post-image" type="file" accept="image/*" />
+        <div id="image-preview" class="image-preview" aria-live="polite"></div>
+
+        <button type="submit">Save pin</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Leaflet JS -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.js"></script>
+  <script>
+    // Initialize the map
+    const mapEl = document.getElementById('map');
+    const map = L.map(mapEl).setView([54.7833, -1.5667], 13); // default to Durham area
+    const addPinBtn = document.getElementById('add-pin-btn');
+    const postFormModal = document.getElementById('post-form-modal');
+    const postForm = document.getElementById('post-form');
+    const formCloseBtn = document.getElementById('form-close-btn');
+    const imageInput = document.getElementById('post-image');
+    const imagePreview = document.getElementById('image-preview');
+
+    let currentDraftMarker = null;
+    let currentImageData = null;
+
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      maxZoom: 19,
+      attribution: '&copy; OpenStreetMap contributors'
+    }).addTo(map);
+
+    function openPostForm() {
+      postFormModal.classList.remove('hidden');
+      postFormModal.setAttribute('aria-hidden', 'false');
+    }
+
+    function closePostForm() {
+      postFormModal.classList.add('hidden');
+      postFormModal.setAttribute('aria-hidden', 'true');
+      postForm.reset();
+      imagePreview.innerHTML = '';
+      currentImageData = null;
+    }
+
+    function createPostPopupContent(rating, text, imageData) {
+      const stars = '★'.repeat(rating) + '☆'.repeat(5 - rating);
+      let html = '<div class="popup-post">';
+      html += `<strong>${stars}</strong>`;
+      if (text) {
+        html += `<p>${text.replace(/\n/g, '<br>')}</p>`;
+      }
+      if (imageData) {
+        html += `<img src="${imageData}" alt="Post image" />`;
+      }
+      html += '</div>';
+      return html;
+    }
+
+    function addDraftMarker() {
+      if (currentDraftMarker) {
+        map.removeLayer(currentDraftMarker);
+      }
+      const center = map.getCenter();
+      currentDraftMarker = L.marker(center, { draggable: true }).addTo(map);
+      currentDraftMarker.bindPopup('Drag the pin to your desired location, then open the form to add a review.').openPopup();
+      currentDraftMarker.on('click', () => openPostForm());
+      currentDraftMarker.on('dragend', () => {
+        currentDraftMarker.openPopup();
+      });
+      openPostForm();
+    }
+
+    addPinBtn.addEventListener('click', addDraftMarker);
+    formCloseBtn.addEventListener('click', closePostForm);
+
+    imageInput.addEventListener('change', () => {
+      const file = imageInput.files[0];
+      if (!file) {
+        imagePreview.innerHTML = '';
+        currentImageData = null;
+        return;
+      }
+      const reader = new FileReader();
+      reader.onload = () => {
+        currentImageData = reader.result;
+        imagePreview.innerHTML = `<img src="${currentImageData}" alt="Selected image preview" />`;
+      };
+      reader.readAsDataURL(file);
+    });
+
+    postForm.addEventListener('submit', (event) => {
+      event.preventDefault();
+      if (!currentDraftMarker) {
+        return;
+      }
+
+      const rating = parseInt(document.getElementById('post-rating').value, 10) || 0;
+      const text = document.getElementById('post-text').value.trim();
+      const popupContent = createPostPopupContent(rating, text, currentImageData);
+
+      currentDraftMarker.bindPopup(popupContent).openPopup();
+      closePostForm();
+    });
+
+    // Try to use browser geolocation to center the map
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition((pos) => {
+        const lat = pos.coords.latitude;
+        const lon = pos.coords.longitude;
+        map.setView([lat, lon], 15);
+        L.marker([lat, lon]).addTo(map).bindPopup('You are here').openPopup();
+      }, (err) => {
+        // If geolocation fails, leave default view and add a sample marker
+        L.marker([54.7833, -1.5667]).addTo(map).bindPopup('Durham (default)').openPopup();
+      });
+    } else {
+      L.marker([54.7833, -1.5667]).addTo(map).bindPopup('Durham (default)').openPopup();
+    }
+  </script>
 
   <!-- Students: change the labels and icons but keep the structure -->
   <nav class="bottom-nav">
