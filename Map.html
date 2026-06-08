@@ -86,8 +86,32 @@
 
   <!-- Service worker registration (makes it a PWA) -->
   <script>
-    if ('serviceWorker' in navigator) {
+   if ('serviceWorker' in navigator) {
       navigator.serviceWorker.register('sw.js');
+    }
+
+    const themeToggle = document.getElementById('toggle-dark-mode');
+    const darkModeClass = 'dark-mode';
+
+    function applyTheme(theme) {
+      if (theme === 'dark') {
+        document.body.classList.add(darkModeClass);
+        if (themeToggle) themeToggle.checked = true;
+      } else {
+        document.body.classList.remove(darkModeClass);
+        if (themeToggle) themeToggle.checked = false;
+      }
+    }
+
+    const savedTheme = localStorage.getItem('theme');
+    applyTheme(savedTheme === 'dark' ? 'dark' : 'light');
+
+    if (themeToggle) {
+      themeToggle.addEventListener('change', () => {
+        const selectedTheme = themeToggle.checked ? 'dark' : 'light';
+        applyTheme(selectedTheme);
+        localStorage.setItem('theme', selectedTheme);
+      });
     }
   </script>
 

@@ -14,15 +14,33 @@
 
   <!-- Shared stylesheet -->
   <link rel="stylesheet" href="styles.css" />
-  
+  <script src="manifest.js"></script>
+  <style>
+    body.dark-mode {
+      background-color: #121212;
+      color: #f1f1f1;
+    }
+    body.dark-mode .page-title,
+    body.dark-mode .page-subtitle,
+    body.dark-mode .settings-panel,
+    body.dark-mode .bottom-nav,
+    body.dark-mode .setting-item,
+    body.dark-mode .nav-btn {
+      color: #f1f1f1;
+    }
+    body.dark-mode .settings-panel,
+    body.dark-mode .bottom-nav {
+      background-color: #181818;
+    }
+    body.dark-mode .setting-item {
+      border-color: #333;
+    }
+  </style>
 
 </head>
 <body>
 
-  <!-- =============================================
-       MAIN CONTENT AREA
-       Students: add your page content below here!
-       ============================================= -->
+  <
   <main>
 
     <h1 class="page-title">Settings</h1>
@@ -69,6 +87,18 @@
 
       <div class="setting-item">
         <div>
+          <label for="toggle-dark-mode">Dark mode</label>
+          <p>Switch to a darker colour scheme for low-light environments.</p>
+        </div>
+        <label class="toggle-control">
+          <input id="toggle-dark-mode" type="checkbox" onchange="toggleDarkMode(this.checked)" />
+          <span class="toggle-slider"></span>
+          <span class="visually-hidden">Enable dark mode</span>
+        </label>
+      </div>
+
+      <div class="setting-item">
+        <div>
           <label for="toggle-voice-hints">Voice hints</label>
           <p>Turn on spoken guidance and prompts throughout the app.</p>
         </div>
@@ -81,13 +111,8 @@
     </section>
 
   </main>
-  <!-- =============================================
-       END OF MAIN CONTENT AREA
-       ============================================= -->
 
 
-  <!-- BOTTOM NAVIGATION BAR -->
-  <!-- Students: change the labels and icons but keep the structure -->
   <nav class="bottom-nav">
     <!-- Button 1: HOME (currently active — this is index.html) -->
     <a href="index.html" class="nav-btn" aria-label="Home">
@@ -99,7 +124,7 @@
       Home
     </a>
 
-    <!-- Button 2: CHAT -->
+
     <a href="chat.html" class="nav-btn" aria-label="Chat">
       <!-- Chat icon -->
       <svg viewBox="0 0 24 24" aria-hidden="true">
@@ -139,14 +164,19 @@
 
 
   </nav>
-  <!-- END NAVIGATION BAR -->
 
-  <!-- Service worker registration (makes it a PWA) -->
-  <script>
-    if ('serviceWorker' in navigator) {
-      navigator.serviceWorker.register('sw.js');
-    }
-  </script>
+    <script src="sw.js"></script>
+    <script>
+      function toggleDarkMode(isEnabled) {
+        document.body.classList.toggle('dark-mode', isEnabled);
+      }
+      document.addEventListener('DOMContentLoaded', function () {
+        var darkModeToggle = document.getElementById('toggle-dark-mode');
+        if (darkModeToggle) {
+          darkModeToggle.checked = document.body.classList.contains('dark-mode');
+        }
+      });
+    </script>
 
 </body>
 </html>

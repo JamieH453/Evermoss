@@ -439,10 +439,8 @@ main {
       transition: background 0.2s;
     }
     .chat-form button:hover {
-      background: #1d4ed8;
+      background: #4A5c40;
     }
-
-
 
     .settings-panel {
       max-width: 760px;
