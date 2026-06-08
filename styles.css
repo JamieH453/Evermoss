@@ -26,7 +26,7 @@
   --font-color: var(--colour-text);
 }
 
-.darkmode {
+.dark-mode {
   --colour-bg: #f4f4f2;
   --colour-surface: #ffffff;
 
@@ -41,6 +41,10 @@
   --colour-nav-bg: #4A5c40;
   --colour-nav-icon: #919191;
   --colour-nav-active: #ffffff;
+
+  --colour-bg: #f4f4f2;
+--colour-surface: #ffffff;
+--colour-text: #1a1a1a;
 }
 
 @media (prefers-color-scheme: dark) {
