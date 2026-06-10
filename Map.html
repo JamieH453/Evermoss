@@ -20,15 +20,21 @@
   <style>
     .map-container {
       width: 100%;
-      height: 500px;
+      /* Make the map fill the available viewport on mobile while leaving space for header/nav */
+      height: calc(100vh - 160px);
       border-radius: 8px;
       overflow: hidden;
     }
 
+    /* map overlay controls (button is part of the map) */
     .map-controls {
-      margin-top: 1rem;
+      position: absolute;
+      top: 0.75rem;
+      right: 0.75rem;
       display: flex;
-      justify-content: flex-end;
+      gap: 0.5rem;
+      z-index: 1100;
+      pointer-events: none; /* allow clicks to pass through except on the button */
     }
 
     #add-pin-btn {
@@ -36,9 +42,31 @@
       color: #fff;
       border: none;
       border-radius: 8px;
-      padding: 0.85rem 1rem;
+      padding: 0.9rem 1.1rem;
       cursor: pointer;
       font: inherit;
+    }
+
+    /* Mobile adjustments */
+    @media (max-width: 600px) {
+      .map-container {
+        height: calc(100vh - 120px);
+        border-radius: 0;
+      }
+
+      .map-controls {
+        position: absolute;
+        right: 0.5rem;
+        bottom: 1.25rem; /* above bottom nav */
+        top: auto;
+      }
+
+      #add-pin-btn {
+        border-radius: 999px;
+        padding: 0.9rem;
+        box-shadow: 0 6px 14px rgba(0,0,0,0.15);
+        pointer-events: auto;
+      }
     }
 
     .modal {
@@ -135,9 +163,10 @@
   <main>
     <h1 class="page-title">Map</h1>
     <p class="page-subtitle">Welcome to the Map page</p>
-    <div id="map" class="map-container"></div>
-    <div class="map-controls">
-      <button id="add-pin-btn" type="button">Add post pin</button>
+    <div id="map" class="map-container">
+      <div class="map-controls">
+        <button id="add-pin-btn" type="button">Add post pin</button>
+      </div>
     </div>
   </main>
   <!-- END OF MAIN CONTENT AREA -->
