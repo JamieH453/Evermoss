@@ -9,6 +9,9 @@
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="default" />
   <link rel="stylesheet" href="styles.css" />
+  <style>
+  
+  </style>
 </head>
 <body>
 
@@ -18,7 +21,7 @@
     <p class="page-subtitle">Ask a question or share a quick update without adding a map pin.</p>
 
     <section class="post-form-section">
-      <form id="postForm" class="post-form">
+      <form id="postForm" class="post-form" onsubmit="event.preventDefault(); const text = this.postText.value.trim(); if (!text) { this.postText.focus(); return false; } const card = document.createElement('article'); card.className='post-card'; const message = document.createElement('p'); message.textContent = text; const time = document.createElement('time'); const now = new Date(); time.dateTime = now.toISOString(); time.textContent = new Intl.DateTimeFormat(navigator.language, { dateStyle: 'medium', timeStyle: 'short' }).format(now); card.append(message, time); const posts = document.getElementById('posts'); posts.prepend(card); const emptyState = document.getElementById('emptyState'); emptyState.hidden = posts.children.length > 0; this.postText.value = ''; this.postText.focus(); return false;">
         <label for="postText">Write your post</label>
         <textarea id="postText" name="postText" placeholder="Type your question or update here..." required></textarea>
         <button type="submit">Add post</button>
