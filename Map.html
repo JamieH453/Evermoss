@@ -2,68 +2,43 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
+  <!-- Makes it look correct on mobile screens -->
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-  <title>My App - map</title>
+  <title>My App – map</title>
 
-
+  <!-- PWA stuff -->
   <link rel="manifest" href="manifest.json" />
   <meta name="theme-color" content="#2563eb" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="default" />
 
-
+  <!-- Shared stylesheet -->
   <link rel="stylesheet" href="styles.css" />
 
-
+  <!-- Leaflet CSS for live map -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css" />
   <style>
     .map-container {
       width: 100%;
-      height: calc(100vh - 160px);
+      height: 500px;
       border-radius: 8px;
       overflow: hidden;
     }
 
-
     .map-controls {
-      position: absolute;
-      top: 0.75rem;
-      right: 0.75rem;
+      margin-top: 1rem;
       display: flex;
-      gap: 0.5rem;
-      z-index: 1100;
-      pointer-events: none; /
-                                }                          
+      justify-content: flex-end;
+    }
 
     #add-pin-btn {
       background: #2563eb;
       color: #fff;
       border: none;
       border-radius: 8px;
-      padding: 0.9rem 1.1rem;
+      padding: 0.85rem 1rem;
       cursor: pointer;
       font: inherit;
-    }
-
-    @media (max-width: 600px) {
-      .map-container {
-        height: calc(100vh - 120px);
-        border-radius: 0;
-      }
-
-      .map-controls {
-        position: absolute;
-        right: 0.5rem;
-        bottom: 1.25rem; /* above bottom nav */
-        top: auto;
-      }
-
-      #add-pin-btn {
-        border-radius: 999px;
-        padding: 0.9rem;
-        box-shadow: 0 6px 14px rgba(0,0,0,0.15);
-        pointer-events: auto;
-      }
     }
 
     .modal {
@@ -156,16 +131,16 @@
 </head>
 <body>
 
+  <!-- MAIN CONTENT AREA -->
   <main>
     <h1 class="page-title">Map</h1>
     <p class="page-subtitle">Welcome to the Map page</p>
-    <div id="map" class="map-container">
-      <div class="map-controls">
-        <button id="add-pin-btn" type="button">Add post pin</button>
-      </div>
+    <div id="map" class="map-container"></div>
+    <div class="map-controls">
+      <button id="add-pin-btn" type="button">Add post pin</button>
     </div>
   </main>
-
+  <!-- END OF MAIN CONTENT AREA -->
 
   <div id="post-form-modal" class="modal hidden" aria-hidden="true">
     <div class="modal-content">
@@ -194,9 +169,10 @@
     </div>
   </div>
 
-
+  <!-- Leaflet JS -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.js"></script>
   <script>
+    // Initialize the map
     const mapEl = document.getElementById('map');
     const map = L.map(mapEl).setView([54.7833, -1.5667], 13); // default to Durham area
     const addPinBtn = document.getElementById('add-pin-btn');
@@ -287,7 +263,7 @@
       closePostForm();
     });
 
-
+    // Try to use browser geolocation to center the map
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition((pos) => {
         const lat = pos.coords.latitude;
@@ -303,9 +279,11 @@
     }
   </script>
 
-
+  <!-- Students: change the labels and icons but keep the structure -->
   <nav class="bottom-nav">
+    <!-- Button 1: HOME (currently active — this is index.html) -->
     <a href="Index.html" class="nav-btn" aria-label="Home">
+      <!-- Home icon -->
       <svg viewBox="0 0 24 24" aria-hidden="true">
         <path d="M3 9.5L12 3l9 6.5V20a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9.5z"/>
         <path d="M9 21V12h6v9"/>
@@ -313,16 +291,18 @@
       Home
     </a>
 
-
+    <!-- Button 2: CHAT -->
     <a href="Chat.html" class="nav-btn" aria-label="Chat">
+      <!-- Chat icon -->
       <svg viewBox="0 0 24 24" aria-hidden="true">
         <path d="M21 15a2 2 0 0 1-2 2H8l-4 4V5a2 2 0 0 1 2-2h13a2 2 0 0 1 2 2z"/>
       </svg>
       Chat
     </a>
 
-   
+    <!-- Button 3: POST -->
     <a href="Post.html" class="nav-btn" aria-label="Post">
+      <!-- Post icon -->
       <svg viewBox="0 0 24 24" aria-hidden="true">
         <path d="M12 5v14"/>
         <path d="M5 12h14"/>
@@ -330,15 +310,18 @@
       Post
     </a>
 
-
+    <!-- Button 4: MAP -->
     <a href="Map.html" class="nav-btn" aria-current="page" aria-label="Map">
+      <!-- Map icon -->
       <svg viewBox="0 0 24 24" aria-hidden="true">
         <path d="M3 6l7-3 7 3 7-3v15l-7 3-7-3-7 3V6z"/>
       </svg>
       Map
     </a>
 
+    <!-- Button 5: SETTINGS -->
     <a href="Settings.html" class="nav-btn" aria-label="Settings">
+      <!-- Settings icon -->
       <svg viewBox="0 0 24 24" aria-hidden="true">
         <circle cx="12" cy="12" r="3"/>
         <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06A1.65 1.65 0 0 0 15 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 8.6 15a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 8.6a1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 15 8.6a1.65 1.65 0 0 0 1.82.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 15z"/>
@@ -348,9 +331,9 @@
 
 
   </nav>
+  <!-- END NAVIGATION BAR -->
 
-
-
+  <!-- Service worker registration (makes it a PWA) -->
   <script>
    if ('serviceWorker' in navigator) {
       navigator.serviceWorker.register('sw.js');

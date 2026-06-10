@@ -14,29 +14,40 @@
 
   <!-- Shared stylesheet -->
   <link rel="stylesheet" href="styles.css" />
-  <script src="manifest.js"></script>
   <style>
-    body.dark-mode {
-      background-color: #121212;
-      color: #f1f1f1;
+
+    .darkMode {
+  --colour-bg: #111827;
+  --colour-surface: #1f2937;
+
+  --colour-primary: #60a5fa;
+  --colour-primary-dark: #3b82f6;
+
+  --colour-text: #f9fafb;
+  --colour-muted: #9ca3af;
+
+  --colour-border: #374151;
+
+  --colour-nav-bg: #111827;
+  --colour-nav-icon: #9ca3af;
+  --colour-nav-active: #f9fafb;
+
+  --shadow: 0 2px 12px rgba(0, 0, 0, 0.48);
+}
+
+
+    body.dark-mode .toggle-slider {
+      background: rgba(255, 255, 255, 0.12);
     }
-    body.dark-mode .page-title,
-    body.dark-mode .page-subtitle,
-    body.dark-mode .settings-panel,
-    body.dark-mode .bottom-nav,
-    body.dark-mode .setting-item,
-    body.dark-mode .nav-btn {
-      color: #f1f1f1;
-    }
-    body.dark-mode .settings-panel,
-    body.dark-mode .bottom-nav {
-      background-color: #181818;
-    }
-    body.dark-mode .setting-item {
-      border-color: #333;
-    }
+
+    
   </style>
 
+
+
+  <script src="manifest.json"></script>
+  <script src="Settings.js" ></script>
+  
 </head>
 <body>
 
@@ -164,25 +175,30 @@
 
   </nav>
 
-      const darkModeToggle = document.getElementById('toggle-dark-mode');
+  <script>
+document.addEventListener('DOMContentLoaded', () => {
+    // match the input id from the markup
+    const darkModeToggle = document.getElementById('toggle-dark-mode');
     const darkModeKey = 'darkModeEnabled';
 
     function setDarkMode(enabled) {
+      // toggle a simple, predictable class name
       document.body.classList.toggle('dark-mode', enabled);
-      darkModeToggle.checked = enabled;
-      localStorage.setItem(darkModeKey, enabled ? 'true' : 'false');
+      if (darkModeToggle) darkModeToggle.checked = enabled;
+      try { localStorage.setItem(darkModeKey, enabled ? 'true' : 'false'); } catch (e) { }
     }
 
-    darkModeToggle.addEventListener('change', (event) => {
-      setDarkMode(event.target.checked);
-    });
-
-    const savedDarkMode = localStorage.getItem(darkModeKey);
-    if (savedDarkMode === 'true') {
-      setDarkMode(true);
+    if (darkModeToggle) {
+      darkModeToggle.addEventListener('change', (event) => {
+        setDarkMode(event.target.checked);
+      });
     }
 
-  <script src="Settings.js"></script>
+    let savedDarkMode = null;
+    try { savedDarkMode = localStorage.getItem(darkModeKey); } catch (e) { }
+    setDarkMode(savedDarkMode === 'true');
+  });
+  </script>
  
 </body>
 </html>
